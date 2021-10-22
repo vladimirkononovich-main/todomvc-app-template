@@ -1,7 +1,9 @@
 import React, { useRef, useContext, useEffect, useDebugValue } from "react";
 import TodosContext from "../context/context";
 
-function TodoItem({ value, id }) {
+function TodoItem({ id }) {
+  const { todoItemValue } = useContext(TodosContext);
+
   const {
     toggleTodo,
     removeTodo,
@@ -22,7 +24,8 @@ function TodoItem({ value, id }) {
   let title;
   let editing;
   let editingValue;
-  value.map((elem) => {
+
+  todoItemValue.map((elem) => {
     if (elem.id === id && elem.completed === true) {
       classes.push("completed");
       completed = true;

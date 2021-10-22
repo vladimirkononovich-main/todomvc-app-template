@@ -2,9 +2,10 @@ import React, { useContext } from "react";
 import TodoItem from "./todoItem";
 import TodosContext from "../context/context";
 
-function AddTodo({ value }) {
-  return value.map((elem) => {
-    return <TodoItem value={value} id={elem.id} key={elem.id} />;
+function AddTodo() {
+  const { todoItemValue } = useContext(TodosContext);
+  return todoItemValue.map((elem) => {
+    return <TodoItem id={elem.id} key={elem.id} />;
   });
 }
 

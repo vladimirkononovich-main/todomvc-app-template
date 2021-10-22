@@ -6,16 +6,10 @@ import Completed from "./completed";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Active from "./active";
 
-function Main({ value }) {
-  const { toggleAllTodo } = useContext(TodosContext);
+function Main() {
+  const { toggleAllTodo, todoItemValue } = useContext(TodosContext);
 
-  let result = [];
-  value.map((elem) => {
-    elem.completed === false ? result.push(false) : result.push(true);
-  });
-  let AllCompleted;
-  if (result.includes(false)) AllCompleted = false;
-  if (!result.includes(false) && result.includes(true)) AllCompleted = true;
+  const AllCompleted = todoItemValue.every((elem) => elem.completed);
 
   return (
     <section className="main">
@@ -28,14 +22,14 @@ function Main({ value }) {
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">
-        <Route exact path='/'>
-          <AddTodo value={value} />
+        <Route exact path="/">
+          <AddTodo />
         </Route>
         <Route path="/active">
-          <Active value={value} />
+          <Active />
         </Route>
         <Route path="/completed">
-          <Completed value={value} />
+          <Completed />
         </Route>
       </ul>
     </section>

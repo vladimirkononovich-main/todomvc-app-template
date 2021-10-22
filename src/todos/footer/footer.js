@@ -2,10 +2,10 @@ import React, { useContext, useDebugValue, useEffect, useState } from "react";
 import TodosContext from "../context/context";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function Footer({ value }) {
-  const { removeCompleted, hashValue } = useContext(TodosContext);
+function Footer() {
+  const { removeCompleted, hashValue, todoItemValue } = useContext(TodosContext);
 
-  let result = value.filter((elem) => {
+  let result = todoItemValue.filter((elem) => {
     return elem.completed === false;
   });
 
@@ -39,7 +39,7 @@ function Footer({ value }) {
           </Link>
         </li>
       </ul>
-      {value.length > result.length ? (
+      {todoItemValue.length > result.length ? (
         <button className="clear-completed" onClick={() => removeCompleted()}>
           Clear completed
         </button>
