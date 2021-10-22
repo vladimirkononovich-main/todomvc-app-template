@@ -9,6 +9,7 @@ import Active from "./active";
 function Main() {
   const { toggleAllTodo, todoItemValue } = useContext(TodosContext);
 
+  // alex: variable naming convention
   const AllCompleted = todoItemValue.every((elem) => elem.completed);
 
   return (
@@ -18,11 +19,13 @@ function Main() {
         className="toggle-all"
         type="checkbox"
         onChange={() => toggleAllTodo()}
-        checked={AllCompleted || ""}
+        checked={AllCompleted || "" /* alex: why not simply AllCompleted? */}
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">
+        {/* alex: just filter todos before rendering here, no need for 3 separate components */}
         <Route exact path="/">
+          {/* alex: AllTodos? */}
           <AddTodo />
         </Route>
         <Route path="/active">

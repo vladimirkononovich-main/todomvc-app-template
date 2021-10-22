@@ -25,11 +25,13 @@ function TodoItem({ id }) {
   let editing;
   let editingValue;
 
+  // alex: no need to map over elements here, just find your todo by id
   todoItemValue.map((elem) => {
     if (elem.id === id && elem.completed === true) {
       classes.push("completed");
       completed = true;
     }
+    // alex: just push "editing" to classes if true
     if (elem.id === id && elem.editing === true) editing = "editing";
     if (elem.id === id) title = elem.title;
     if (elem.id === id) editingValue = elem.editingValue;
@@ -41,7 +43,7 @@ function TodoItem({ id }) {
           className="toggle"
           type="checkbox"
           onChange={() => toggleTodo(id)}
-          checked={completed || ""}
+          checked={completed || "" /* alex: no need for || "" */}
         />
         <label onDoubleClick={() => editingTodo(id)}>{title}</label>
         <button className="destroy" onClick={() => removeTodo(id)}></button>
@@ -51,7 +53,7 @@ function TodoItem({ id }) {
         id={id}
         ref={textEditInput}
         value={editingValue}
-        onInput={handleEdit.bind(this, id)}
+        onInput={handleEdit.bind(this, id) /* alex: why bind? */}
         onKeyDown={editedTodo.bind(this, id)}
         onBlur={() => onBlurEditTodo(id)}
       ></input>

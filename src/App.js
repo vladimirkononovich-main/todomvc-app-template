@@ -10,11 +10,13 @@ function App() {
   const [todoItemValue, setTodoItem] = useState(
     JSON.parse(localStorage.getItem("value")) || []
   );
+  // alex: useEffect
   localStorage.setItem("value", JSON.stringify(todoItemValue));
 
   const addNewTodo = (event) => {
     if (event.code === "Enter" && event.target.value.trim()) {
       setTodoItem(
+        // alex: could use spread operator
         todoItemValue.concat([
           {
             title: event.target.value,
@@ -32,6 +34,7 @@ function App() {
     setTodoItem(
       todoItemValue.map((elem) => {
         if (elem.id === id) elem.completed = !elem.completed;
+        // alex: don't mutate original object, use spread { ...elem, completed }
         return elem;
       })
     );
@@ -63,6 +66,7 @@ function App() {
   const handleEdit = (id, event) => {
     setTodoItem(
       todoItemValue.map((elem) => {
+      // alex: nice!
         if (elem.id === id) elem.editingValue = event.target.value;
         return elem;
       })
@@ -71,6 +75,7 @@ function App() {
   const editingTodo = (id) => {
     setTodoItem(
       todoItemValue.map((elem) => {
+        // alex: why toggle instead of true?
         if (elem.id === id) elem.editing = !elem.editing;
         return elem;
       })
@@ -79,6 +84,7 @@ function App() {
   const editedTodo = (id, event) => {
     setTodoItem(
       todoItemValue.map((elem) => {
+        // alex: can guard if by id first instead of repeating condition
         if (elem.id === id && event.code === "Enter") {
           elem.title = elem.editingValue;
           elem.editing = false;
