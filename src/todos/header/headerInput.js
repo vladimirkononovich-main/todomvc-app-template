@@ -4,9 +4,8 @@ import TodosContext from "../context/context";
 function HeaderInput() {
   const { addNewTodo } = useContext(TodosContext);
 
-  let result;
   const handleChange = (event) => {
-    result = event.target.value;
+    return event.target.value;
   };
 
   return (
@@ -16,7 +15,6 @@ function HeaderInput() {
         className="new-todo"
         placeholder="What needs to be done?"
         autoFocus
-        value={result}
         onInput={handleChange}
         onKeyDown={addNewTodo}
       />

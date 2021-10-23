@@ -3,13 +3,10 @@ import TodoItem from "./todoItem";
 import TodosContext from "../context/context";
 
 function Active() {
-  const { todoItemValue } = useContext(TodosContext);
-
-  return todoItemValue.map((elem) => {
+  const { todosItemsValue } = useContext(TodosContext);
+  return todosItemsValue.map((elem) => {
     if (elem.completed === false)
-      return (
-        <TodoItem todoItemValue={todoItemValue} id={elem.id} key={elem.id} />
-      );
+      return <TodoItem id={elem.id} key={elem.id} />;
   });
 }
 

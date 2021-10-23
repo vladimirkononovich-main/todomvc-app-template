@@ -2,8 +2,6 @@ import React, { useRef, useContext, useEffect, useDebugValue } from "react";
 import TodosContext from "../context/context";
 
 function TodoItem({ id }) {
-  const { todoItemValue } = useContext(TodosContext);
-
   const {
     toggleTodo,
     removeTodo,
@@ -11,6 +9,7 @@ function TodoItem({ id }) {
     handleEdit,
     editedTodo,
     onBlurEditTodo,
+    todosItemsValue,
   } = useContext(TodosContext);
 
   const textEditInput = useRef(null);
@@ -22,26 +21,26 @@ function TodoItem({ id }) {
   const classes = [];
   let completed;
   let title;
-  let editing;
   let editingValue;
+  
+  todosItemsValue.forEach((elem) => {
+    if (elem.id === id) {
+      if (elem.completed === true) classes.push("completed");
+      if (elem.editing === true) classes.push("editing");
 
-  todoItemValue.map((elem) => {
-    if (elem.id === id && elem.completed === true) {
-      classes.push("completed");
-      completed = true;
+      completed = elem.completed;
+      title = elem.title;
+      editingValue = elem.editingValue;
     }
-    if (elem.id === id && elem.editing === true) editing = "editing";
-    if (elem.id === id) title = elem.title;
-    if (elem.id === id) editingValue = elem.editingValue;
   });
   return (
-    <li className={classes[0] + " " + editing}>
+    <li className={classes.join(" ")}>
       <div className="view">
         <input
           className="toggle"
           type="checkbox"
           onChange={() => toggleTodo(id)}
-          checked={completed || ""}
+          checked={completed}
         />
         <label onDoubleClick={() => editingTodo(id)}>{title}</label>
         <button className="destroy" onClick={() => removeTodo(id)}></button>
@@ -51,8 +50,8 @@ function TodoItem({ id }) {
         id={id}
         ref={textEditInput}
         value={editingValue}
-        onInput={handleEdit.bind(this, id)}
-        onKeyDown={editedTodo.bind(this, id)}
+        onInput={(event) => handleEdit(id, event)}
+        onKeyDown={(event) => editedTodo(id, event)}
         onBlur={() => onBlurEditTodo(id)}
       ></input>
     </li>

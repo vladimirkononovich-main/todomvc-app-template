@@ -7,9 +7,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Active from "./active";
 
 function Main() {
-  const { toggleAllTodo, todoItemValue } = useContext(TodosContext);
-
-  const AllCompleted = todoItemValue.every((elem) => elem.completed);
+  const { toggleAllTodo, todosItemsValue } = useContext(TodosContext);
+  const AllCompleted = todosItemsValue.every((elem) => elem.completed);
 
   return (
     <section className="main">
@@ -18,7 +17,7 @@ function Main() {
         className="toggle-all"
         type="checkbox"
         onChange={() => toggleAllTodo()}
-        checked={AllCompleted || ""}
+        checked={AllCompleted}
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">

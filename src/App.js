@@ -7,93 +7,102 @@ import TodosContext from "./todos/context/context";
 
 function App() {
   const [hashValue, setHash] = useState(window.location.hash);
-  const [todoItemValue, setTodoItem] = useState(
+  const [todosItemsValue, setTodosItems] = useState(
     JSON.parse(localStorage.getItem("value")) || []
   );
-  localStorage.setItem("value", JSON.stringify(todoItemValue));
+  useEffect(() => {
+    localStorage.setItem("value", JSON.stringify(todosItemsValue));
+  });
 
   const addNewTodo = (event) => {
     if (event.code === "Enter" && event.target.value.trim()) {
-      setTodoItem(
-        todoItemValue.concat([
-          {
-            title: event.target.value,
-            id: performance.now(),
-            completed: false,
-            editing: false,
-            editingValue: event.target.value,
-          },
-        ])
-      );
+      setTodosItems([
+        ...todosItemsValue,
+        {
+          title: event.target.value,
+          id: performance.now(),
+          completed: false,
+          editing: false,
+          editingValue: event.target.value,
+        },
+      ]);
       event.target.value = null;
     }
   };
   const toggleTodo = (id) => {
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (elem.id === id) elem.completed = !elem.completed;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (elem.id === id) return { ...elem, completed: !elem.completed };
         return elem;
       })
     );
   };
   const toggleAllTodo = () => {
-    const checkAllCompleted = todoItemValue.every((elem) => elem.completed);
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (checkAllCompleted) elem.completed = false;
-        else elem.completed = true;
-        return elem;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (todosItemsValue.every((elem) => elem.completed)) {
+          return { ...elem, completed: false };
+        } else {
+          return { ...elem, completed: true };
+        }
       })
     );
   };
   const removeTodo = (id) => {
-    setTodoItem(
-      todoItemValue.filter((elem) => {
+    setTodosItems(
+      todosItemsValue.filter((elem) => {
         return elem.id !== id;
       })
     );
   };
   const removeCompleted = () => {
-    setTodoItem(
-      todoItemValue.filter((elem) => {
+    setTodosItems(
+      todosItemsValue.filter((elem) => {
         return elem.completed !== true;
       })
     );
   };
   const handleEdit = (id, event) => {
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (elem.id === id) elem.editingValue = event.target.value;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (elem.id === id) {
+          return { ...elem, editingValue: event.target.value };
+        }
         return elem;
       })
     );
   };
   const editingTodo = (id) => {
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (elem.id === id) elem.editing = !elem.editing;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (elem.id === id) {
+          return { ...elem, editing: true };
+        }
         return elem;
       })
     );
   };
   const editedTodo = (id, event) => {
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (elem.id === id && event.code === "Enter") {
-          elem.title = elem.editingValue;
-          elem.editing = false;
-        }
-        if (elem.id === id && event.code === "Escape") {
-          elem.editing = false;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (elem.id === id) {
+          if (event.code === "Enter" && elem.editingValue.trim()) {
+            return { ...elem, title: elem.editingValue, editing: false };
+          }
+          if (event.code === "Escape") {
+            return { ...elem, editing: false };
+          }
         }
         return elem;
       })
     );
   };
   const onBlurEditTodo = (id) => {
-    setTodoItem(
-      todoItemValue.map((elem) => {
-        if (elem.id === id) elem.editing = false;
+    setTodosItems(
+      todosItemsValue.map((elem) => {
+        if (elem.id === id) {
+          return { ...elem, editing: false };
+        }
         return elem;
       })
     );
@@ -105,7 +114,7 @@ function App() {
   return (
     <TodosContext.Provider
       value={{
-        todoItemValue,
+        todosItemsValue,
         addNewTodo,
         toggleTodo,
         removeTodo,
@@ -121,11 +130,11 @@ function App() {
       <>
         <section className="todoapp">
           <HeaderInput />
-          {todoItemValue.length > 0 ? (
-            <Main todoItemValue={todoItemValue} />
+          {todosItemsValue.length > 0 ? (
+            <Main />
           ) : null}
-          {todoItemValue.length > 0 ? (
-            <Footer todoItemValue={todoItemValue} />
+          {todosItemsValue.length > 0 ? (
+            <Footer />
           ) : null}
         </section>
         <FooterInfo />

@@ -3,17 +3,17 @@ import TodosContext from "../context/context";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function Footer() {
-  const { removeCompleted, hashValue, todoItemValue } = useContext(TodosContext);
+  const { removeCompleted, hashValue, todosItemsValue } = useContext(TodosContext);
 
-  let result = todoItemValue.filter((elem) => {
+  const notCompletedTodo = todosItemsValue.filter((elem) => {
     return elem.completed === false;
   });
 
   return (
     <footer className="footer">
       <span className="todo-count">
-        <strong>{result.length}</strong> item
-        {result.length === 0 || result.length > 1 ? "s" : null} left
+        <strong>{notCompletedTodo.length}</strong> item
+        {notCompletedTodo.length === 0 || notCompletedTodo.length > 1 ? "s" : null} left
       </span>
 
       <ul className="filters">
@@ -39,7 +39,7 @@ function Footer() {
           </Link>
         </li>
       </ul>
-      {todoItemValue.length > result.length ? (
+      {todosItemsValue.length > notCompletedTodo.length ? (
         <button className="clear-completed" onClick={() => removeCompleted()}>
           Clear completed
         </button>
