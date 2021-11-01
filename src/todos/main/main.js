@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Active from "./active";
 
 function Main() {
-  const { toggleAllTodo, todosItemsValue } = useContext(TodosContext);
+  const { toggleAllTodo, todosItemsValue, hashValue } = useContext(TodosContext);
   const AllCompleted = todosItemsValue.every((elem) => elem.completed);
 
   return (
@@ -21,15 +21,17 @@ function Main() {
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">
-        <Route exact path="/">
-          <AddTodo />
-        </Route>
-        <Route path="/active">
-          <Active />
-        </Route>
-        <Route path="/completed">
-          <Completed />
-        </Route>
+        {todosItemsValue.map((elem) => {
+          if (elem.completed === true && hashValue === "#/completed") {
+            return <TodoItem id={elem.id} key={elem.id} />;
+          }
+          if (hashValue === "#/") {
+            return <TodoItem id={elem.id} key={elem.id} />;
+          }
+          if (elem.completed === false && hashValue === "#/active") {
+            return <TodoItem id={elem.id} key={elem.id} />;
+          }
+        })}
       </ul>
     </section>
   );
