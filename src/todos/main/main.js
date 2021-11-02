@@ -7,6 +7,17 @@ function Main() {
   const { toggleAllTodo, todosItemsValue, hashValue } = useContext(TodosContext);
   const AllCompleted = todosItemsValue.every((elem) => elem.completed);
 
+  const filteredTodos = todosItemsValue.filter((todo) => {
+    switch (hashValue) {
+      case "#/completed":
+        return todo.completed === true;
+      case "#/":
+        return todo;
+      case "#/active":
+        return todo.completed === false;
+    }
+  });
+
   return (
     <section className="main">
       <input
@@ -18,16 +29,8 @@ function Main() {
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">
-        {todosItemsValue.map((elem) => {
-          if (elem.completed === true && hashValue === "#/completed") {
-            return <TodoItem id={elem.id} key={elem.id} />;
-          }
-          if (hashValue === "#/") {
-            return <TodoItem id={elem.id} key={elem.id} />;
-          }
-          if (elem.completed === false && hashValue === "#/active") {
-            return <TodoItem id={elem.id} key={elem.id} />;
-          }
+        {filteredTodos.map((elem) => {
+          return <TodoItem id={elem.id} key={elem.id} />;
         })}
       </ul>
     </section>
@@ -35,19 +38,3 @@ function Main() {
 }
 
 export default Main;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
