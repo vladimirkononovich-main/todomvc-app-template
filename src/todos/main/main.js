@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
-import AddTodo from "./addTodo";
 import TodoItem from "./todoItem";
 import TodosContext from "../context/context";
-import Completed from "./completed";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Active from "./active";
 
 function Main() {
   const { toggleAllTodo, todosItemsValue, hashValue } = useContext(TodosContext);
@@ -38,3 +35,19 @@ function Main() {
 }
 
 export default Main;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

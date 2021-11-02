@@ -14,15 +14,15 @@ function App() {
     localStorage.setItem("value", JSON.stringify(todosItemsValue));
   });
 
-  const newTodo = (event) => {
+  const newTodo = (todoTitle) => {
     setTodosItems([
       ...todosItemsValue,
       {
-        title: event.target.value,
+        title: todoTitle,
         id: performance.now(),
         completed: false,
         editing: false,
-        editingValue: event.target.value,
+        editingValue: todoTitle,
       },
     ]);
   };
