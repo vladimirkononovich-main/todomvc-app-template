@@ -1,14 +1,22 @@
 import React, { useContext } from "react";
-import AddTodo from "./addTodo";
 import TodoItem from "./todoItem";
 import TodosContext from "../context/context";
-import Completed from "./completed";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Active from "./active";
 
 function Main() {
-  const { toggleAllTodo, todosItemsValue } = useContext(TodosContext);
+  const { toggleAllTodo, todosItemsValue, hashValue } = useContext(TodosContext);
   const AllCompleted = todosItemsValue.every((elem) => elem.completed);
+
+  const filteredTodos = todosItemsValue.filter((todo) => {
+    switch (hashValue) {
+      case "#/completed":
+        return todo.completed === true;
+      case "#/":
+        return todo;
+      case "#/active":
+        return todo.completed === false;
+    }
+  });
 
   return (
     <section className="main">
@@ -21,15 +29,9 @@ function Main() {
       />
       <label htmlFor="toggle-all"></label>
       <ul className="todo-list">
-        <Route exact path="/">
-          <AddTodo />
-        </Route>
-        <Route path="/active">
-          <Active />
-        </Route>
-        <Route path="/completed">
-          <Completed />
-        </Route>
+        {filteredTodos.map((elem) => {
+          return <TodoItem id={elem.id} key={elem.id} />;
+        })}
       </ul>
     </section>
   );

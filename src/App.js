@@ -14,20 +14,17 @@ function App() {
     localStorage.setItem("value", JSON.stringify(todosItemsValue));
   });
 
-  const addNewTodo = (event) => {
-    if (event.code === "Enter" && event.target.value.trim()) {
-      setTodosItems([
-        ...todosItemsValue,
-        {
-          title: event.target.value,
-          id: performance.now(),
-          completed: false,
-          editing: false,
-          editingValue: event.target.value,
-        },
-      ]);
-      event.target.value = null;
-    }
+  const newTodo = (todoTitle) => {
+    setTodosItems([
+      ...todosItemsValue,
+      {
+        title: todoTitle,
+        id: performance.now(),
+        completed: false,
+        editing: false,
+        editingValue: todoTitle,
+      },
+    ]);
   };
   const toggleTodo = (id) => {
     setTodosItems(
@@ -115,7 +112,7 @@ function App() {
     <TodosContext.Provider
       value={{
         todosItemsValue,
-        addNewTodo,
+        newTodo,
         toggleTodo,
         removeTodo,
         toggleAllTodo,
@@ -130,12 +127,8 @@ function App() {
       <>
         <section className="todoapp">
           <HeaderInput />
-          {todosItemsValue.length > 0 ? (
-            <Main />
-          ) : null}
-          {todosItemsValue.length > 0 ? (
-            <Footer />
-          ) : null}
+          {todosItemsValue.length > 0 ? <Main /> : null}
+          {todosItemsValue.length > 0 ? <Footer /> : null}
         </section>
         <FooterInfo />
       </>

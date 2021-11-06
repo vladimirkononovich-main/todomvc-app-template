@@ -1,13 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import TodosContext from "../context/context";
 
 function HeaderInput() {
-  const { addNewTodo } = useContext(TodosContext);
+  const { newTodo } = useContext(TodosContext);
+  const [titleValue, setTitle] = useState("");
 
-  const handleChange = (event) => {
-    return event.target.value;
+  const addNewTodo = (event) => {
+    setTitle(event.target.value);
+    if (event.code === "Enter" && titleValue.trim()) {
+      newTodo(titleValue);
+      setTitle("");
+    }
   };
-
   return (
     <header className="header">
       <h1>todos</h1>
@@ -15,7 +19,8 @@ function HeaderInput() {
         className="new-todo"
         placeholder="What needs to be done?"
         autoFocus
-        onInput={handleChange}
+        value={titleValue}
+        onInput={addNewTodo}
         onKeyDown={addNewTodo}
       />
     </header>
