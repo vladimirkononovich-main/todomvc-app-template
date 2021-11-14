@@ -7,9 +7,13 @@ import TodosContext from "./todos/context/context";
 
 function App() {
   const [hashValue, setHash] = useState(window.location.hash);
-  const [todosItemsValue, setTodosItems] = useState(
-    JSON.parse(localStorage.getItem("value")) || []
-  );
+  const [todosItemsValue, setTodosItems] = useState([]);
+
+  useEffect(() => {
+    const storageTodosItemsValue = JSON.parse(localStorage.getItem("value"));
+    setTodosItems(storageTodosItemsValue)
+  }, []);
+  
   useEffect(() => {
     localStorage.setItem("value", JSON.stringify(todosItemsValue));
   });
